@@ -28,10 +28,10 @@
 static const size_t BUFFER_SIZE = 1024;
 struct message_buffer_t
 {
-    char *buffer;         // Сообщение
-    volatile int size;    // Размер данных в буфере
-    volatile int offset;  // Указатель на начало при записи
-    size_t capacity;      // Выделенный размер буфера
+    char *buffer;    // Сообщение
+    int size;        // Размер данных в буфере
+    int offset;      // Указатель на начало при записи
+    size_t capacity; // Выделенный размер буфера
 };
 typedef struct message_buffer_t message_buffer_t;
 

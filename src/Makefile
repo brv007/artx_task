@@ -8,7 +8,7 @@ target_name := c_developer_test_task
 src_files   := $(wildcard $(src_dir)/*.c)
 
 CC = gcc
-COPT :=
+COPT := -Wall
 DEBUGFLAGS := -g -O0
 INCLUDE :=
 LD_LIBS := -lev
