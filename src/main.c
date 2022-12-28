@@ -15,6 +15,8 @@
 #include <fcntl.h>
 #include <time.h>
 
+#include "message_buffer.h"
+
 #ifdef _DEBUG
 #define DEBUG(msg...) fprintf(stderr, msg)
 #else
@@ -23,17 +25,9 @@
 
 
 /*
- * Буфер сообщения
+ * Размер буфера для сообщения
  */
 static const size_t BUFFER_SIZE = 1024;
-struct message_buffer_t
-{
-    char *buffer;    // Сообщение
-    int size;        // Размер данных в буфере
-    int offset;      // Указатель на начало при записи
-    size_t capacity; // Выделенный размер буфера
-};
-typedef struct message_buffer_t message_buffer_t;
 
 /*
  *  Инициализация сокета
@@ -86,7 +80,7 @@ static void release_connection(int sock_id, struct ev_loop *loop, ev_io *watcher
   ev_io_stop(loop, watcher);
   close(sock_id);
   free(watcher);
-  free(buffer->buffer);
+  message_buffer_destroy(buffer);
   free(buffer);
 }
 
@@ -343,13 +337,10 @@ void accept_connection(struct ev_loop *loop, ev_io *watcher, int revents)
     err(EXIT_FAILURE, "Ошибка выделения памяти для буфера сообщения");
   }
 
-  buffer->buffer = calloc(BUFFER_SIZE, sizeof(char));
-  if (buffer->buffer == NULL)
+  if (message_buffer_init(buffer, BUFFER_SIZE) < 0)
   {
     err(EXIT_FAILURE, "Ошибка выделения памяти для записи данных сообщения");
   }
-
-  buffer->capacity = BUFFER_SIZE;
 
   io_watcher = calloc(1, sizeof(struct ev_io));
   if (io_watcher == NULL)
