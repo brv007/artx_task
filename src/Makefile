@@ -9,9 +9,9 @@ src_files   := $(wildcard $(src_dir)/*.c)
 
 CC = gcc
 COPT := -Wall
-DEBUGFLAGS := -g -O0
+DEBUGFLAGS :=
 INCLUDE :=
-LD_LIBS := -lev
+LD_LIBS := -lev -lpthread
 
 wrk_dir  := $(base_dir)/obj/$(target_name)
 bin_dir  := $(src_dir)/$(base_dir)bin/
@@ -38,7 +38,7 @@ clean: $(depends)
 	@rm -rf $(bin_dir)/$(target_name)
 
 %.o: %.c $(makefile)
-	$(CC) $(COPT) $(CFLAGS) $(INCLUDE) -c -MD $<
+	$(CC) $(COPT) $(CFLAGS) $(INCLUDE) $(DEBUGFLAGS) -c -MD $<
 
 ifneq ($(wildcard *.d),)
 include $(wildcard *.d)
