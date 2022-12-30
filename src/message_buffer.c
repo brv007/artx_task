@@ -33,3 +33,23 @@ void message_buffer_destroy(message_buffer_t * buffer)
   buffer->size = buffer->offset = 0;
   buffer->capacity = 0;
 }
+
+// изменение размера буфера
+int message_buffer_resize(message_buffer_t * buffer, size_t capacity)
+{
+  if (capacity > buffer->capacity)
+  {
+    char * ptr = NULL;
+    ptr = realloc(buffer->buffer, capacity * sizeof(char));
+    if (ptr == NULL)
+      return -1;
+    buffer->buffer = ptr;
+    buffer->capacity = capacity;
+  }
+  else if (capacity == 0)
+  {
+    message_buffer_destroy(buffer);
+  }
+  buffer->size = buffer->offset = 0;
+  return 0;
+}

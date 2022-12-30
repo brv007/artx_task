@@ -21,5 +21,7 @@ typedef struct message_buffer_t message_buffer_t;
 int message_buffer_init(message_buffer_t * buffer, size_t capacity);
 // освобождение памяти
 void message_buffer_destroy(message_buffer_t * buffer);
+// изменение размера буфера
+int message_buffer_resize(message_buffer_t * buffer, size_t capacity);
 
 #endif // __MESSAGE_BUFFER_H__
